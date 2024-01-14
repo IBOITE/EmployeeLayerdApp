@@ -26,6 +26,15 @@ namespace EmployeeLayerdApp.api.Controllers
         {
             return _departmentRepository.GetAll();
         }
+        [HttpPut("{id}")]
+        public void updatee(int id, [FromBody] Department department)
+        {
+            if (id != department.Id)
+            {
+                 BadRequest();
+            }
+              _departmentRepository.Update(department);
+        }
         */
 
         [HttpGet("GetAll")]
@@ -59,11 +68,12 @@ namespace EmployeeLayerdApp.api.Controllers
             return (IActionResult)await _departmentRepository.Update(department);
         }
 
+
         // DELETE api/<EmployeesController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            _departmentRepository.Delete(id);
+            await _departmentRepository.Delete(id);
         }
     }
 }

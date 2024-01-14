@@ -27,11 +27,16 @@ namespace Employee.Data.RepositoryBase
         {
             return Context.Set<T>().Find(id);
         }
+        
+        public void updatee(T entity)
+        {
+            Context.Entry(entity).State = EntityState.Modified;
+            Context.SaveChangesAsync();
+        }
         */
 
 
 
-        
         public virtual async Task<T> Insert(T entity)
         {
             var result = (await Context.Set<T>().AddAsync(entity)).Entity;
@@ -55,10 +60,12 @@ namespace Employee.Data.RepositoryBase
             entity.Id = originalentity.Id;
             Context.Entry(originalentity).CurrentValues.SetValues(entity);
             */
-            Context.Entry(entity).State= EntityState.Modified;
+            Context.Entry(entity).State = EntityState.Modified;
             await Context.SaveChangesAsync();
             return entity;
         }
+
+        
 
         public virtual async Task Delete(int id)
         {
@@ -141,6 +148,7 @@ namespace Employee.Data.RepositoryBase
         {
             return await Context.Set<T>().AnyAsync(predicate);
         }
+
         
     }
 }

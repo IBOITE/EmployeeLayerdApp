@@ -49,9 +49,9 @@ namespace EmployeeLayerdApp.api.Controllers
 
         // DELETE api/<EmployeesController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            _employeeRepository.Delete(id);
+            await _employeeRepository.Delete(id);
         }
     }
 }

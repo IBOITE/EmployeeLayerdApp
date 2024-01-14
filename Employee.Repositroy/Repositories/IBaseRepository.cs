@@ -12,9 +12,10 @@ namespace Employee.Repositroy.Repositories
 
         //T GetByID(int id);
         //IEnumerable<T> GetAll();
+        //void updatee(T entity);
 
 
-        
+
         Task<T> Insert(T entity);
         Task InsertRange(IEnumerable<T> list);
         Task<T> Update(T entity);
