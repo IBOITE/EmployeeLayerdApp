@@ -1,7 +1,18 @@
+using Employee.Data;
+using Employee.Data.RepositoryBase;
+using Employee.Repositroy.Repositories;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName))
+);
+builder.Services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+builder.Services.AddCloudscribePagination();
 
 var app = builder.Build();
 

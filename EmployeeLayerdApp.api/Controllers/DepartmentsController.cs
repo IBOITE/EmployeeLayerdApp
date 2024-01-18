@@ -38,16 +38,16 @@ namespace EmployeeLayerdApp.api.Controllers
         */
 
         [HttpGet("GetAll")]
-        public Task<IEnumerable<Department>> GetAll()
+        public IEnumerable<Department> GetAll()
         {
             return _departmentRepository.List();
         }
 
         // GET api/<EmployeesController>/5
         [HttpGet("{id}")]
-        public async Task<Department> Get(int id)
+        public  Department Get(int id)
         {
-            return await _departmentRepository.Get(id);
+            return  _departmentRepository.Get(id);
         }
 
         // POST api/<EmployeesController>
@@ -59,21 +59,22 @@ namespace EmployeeLayerdApp.api.Controllers
 
         // PUT api/<EmployeesController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] Department department)
+        public  IActionResult Put(int id, [FromBody] Department department)
         {
             if (id != department.Id)
             {
                 return BadRequest();
             }
-            return (IActionResult)await _departmentRepository.Update(department);
+             _departmentRepository.Update(department);
+            return Ok();   
         }
 
 
         // DELETE api/<EmployeesController>/5
         [HttpDelete("{id}")]
-        public async Task Delete(int id)
+        public void Delete(int id)
         {
-            await _departmentRepository.Delete(id);
+             _departmentRepository.Delete(id);
         }
     }
 }

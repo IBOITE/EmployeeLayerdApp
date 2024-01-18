@@ -16,7 +16,9 @@ namespace Employee.Repositroy.Models
 
         public int? EmployeeSalary { get; set; }
 
-        public Department Department { get; set; }
         public int DepartmentId { get; set; }
+
+        public Department Department { get; set; }
+        
     }
 }

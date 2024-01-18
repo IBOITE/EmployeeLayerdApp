@@ -17,16 +17,16 @@ namespace EmployeeLayerdApp.api.Controllers
         }
         // GET: api/<EmployeesController>
         [HttpGet("GetAll")]
-        public Task<IEnumerable<Employe>>  GetAll()
+        public IEnumerable<Employe>  GetAll()
         {
             return _employeeRepository.List();
         }
 
         // GET api/<EmployeesController>/5
         [HttpGet("{id}")]
-        public async Task<Employe> Get(int id)
+        public  Employe Get(int id)
         {
-            return await _employeeRepository.Get(id);
+            return  _employeeRepository.Get(id);
         }
 
         // POST api/<EmployeesController>
@@ -38,20 +38,20 @@ namespace EmployeeLayerdApp.api.Controllers
 
         // PUT api/<EmployeesController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] Employe employe)
+        public IActionResult Put(int id, [FromBody] Employe employe)
         {
             if (id!=employe.Id)
             {
                 return BadRequest();
             }
-            return (IActionResult)await _employeeRepository.Update(employe);
+            return (IActionResult) _employeeRepository.Update(employe);
         }
 
         // DELETE api/<EmployeesController>/5
         [HttpDelete("{id}")]
-        public async Task Delete(int id)
+        public  void Delete(int id)
         {
-            await _employeeRepository.Delete(id);
+             _employeeRepository.Delete(id);
         }
     }
 }

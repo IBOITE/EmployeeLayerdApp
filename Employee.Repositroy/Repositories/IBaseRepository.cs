@@ -14,23 +14,25 @@ namespace Employee.Repositroy.Repositories
         //IEnumerable<T> GetAll();
         //void updatee(T entity);
 
+        
 
+        T Insert(T entity);
+        void InsertRange(IEnumerable<T> list);
+        T Update(T entity);
+        void Delete(int id);
+        void DeleteAll(IEnumerable<T> entitys);
 
-        Task<T> Insert(T entity);
-        Task InsertRange(IEnumerable<T> list);
-        Task<T> Update(T entity);
-        Task Delete(int id);
-        Task DeleteAll(IEnumerable<T> entitys);
-
-        Task<T> Get(int id);
+        T Get(int id);
         IQueryable<T> GetAsIQueryable(Expression<Func<T, bool>> predicate = null);
         IQueryable<T> GetAsIQueryable(Expression<Func<T, bool>> predicate, params string[] includes);
-        Task<IEnumerable<T>> List();
-        Task<IEnumerable<T>> List(Expression<Func<T, bool>> predicate);
+        IEnumerable<T> List();
+        IEnumerable<T> List(int pagenumber,int pagesize);
+        IEnumerable<T> List(Expression<Func<T, bool>> predicate);
 
-        Task<int> Count();
-        Task<int> Count(Expression<Func<T, bool>> predicate);
-        Task<bool> Any(Expression<Func<T, bool>> predicate);
+        int Count();
+        int Count(Expression<Func<T, bool>> predicate);
+        bool Any(Expression<Func<T, bool>> predicate);
+
         
     }
 }

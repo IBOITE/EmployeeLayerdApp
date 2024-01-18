@@ -18,11 +18,11 @@ namespace Employee.Data.RepositoryBase
         }
 
         /*
+       
         public IEnumerable<T> GetAll()
         {
             return Context.Set<T>().ToList();
         }
-
         public T GetByID(int id)
         {
             return Context.Set<T>().Find(id);
@@ -34,24 +34,25 @@ namespace Employee.Data.RepositoryBase
             Context.SaveChangesAsync();
         }
         */
+        
 
 
 
-        public virtual async Task<T> Insert(T entity)
+        public virtual  T Insert(T entity)
         {
-            var result = (await Context.Set<T>().AddAsync(entity)).Entity;
-            await Context.SaveChangesAsync();
+            var result = ( Context.Set<T>().Add(entity)).Entity;
+            Context.SaveChanges();
             //return await Get(result.Id);
             return result;
         }
 
-        public virtual async Task InsertRange(IEnumerable<T> list)
+        public virtual void InsertRange(IEnumerable<T> list)
         {
-            await Context.Set<T>().AddRangeAsync(list);
-            await Context.SaveChangesAsync();
+             Context.Set<T>().AddRange(list);
+             Context.SaveChanges();
         }
 
-        public virtual async Task<T> Update(T entity)
+        public virtual T Update(T entity)
         {
             /*
             var originalentity = await Get(entity.Id);
@@ -61,28 +62,28 @@ namespace Employee.Data.RepositoryBase
             Context.Entry(originalentity).CurrentValues.SetValues(entity);
             */
             Context.Entry(entity).State = EntityState.Modified;
-            await Context.SaveChangesAsync();
+            Context.SaveChanges();
             return entity;
         }
 
         
 
-        public virtual async Task Delete(int id)
+        public virtual void Delete(int id)
         {
-            var entity = await Get(id);
+            var entity = Get(id);
             if (entity == null) throw new Exception("IEntity Not Found");
 
             Context.Set<T>().Remove(entity);
-            await Context.SaveChangesAsync();
+            Context.SaveChanges();
         }
 
-        public virtual async Task DeleteAll(IEnumerable<T> entitys)
+        public virtual void DeleteAll(IEnumerable<T> entitys)
         {
             Context.Set<T>().RemoveRange(entitys);
-            await Context.SaveChangesAsync();
+            Context.SaveChanges();
         }
 
-        public virtual async Task<T> Get(int id)
+        public virtual T Get(int id)
         {
             //var entity = await GetAsIQueryable(x => x.Id == id).FirstOrDefaultAsync();
             //return entity;
@@ -114,39 +115,46 @@ namespace Employee.Data.RepositoryBase
 
 
 
-        public virtual async Task<IEnumerable<T>> List()
+        public virtual IEnumerable<T> List()
         {
-            var entity = await Context.Set<T>()
-                .ToListAsync();
+            var entity =  Context.Set<T>()
+                .ToList();
 
             return entity;
         }
-        
-
-
-        public virtual async Task<IEnumerable<T>> List(Expression<Func<T, bool>> predicate)
+        public virtual IEnumerable<T> List(int pagenumber,int pagesize)
         {
-            var entity = await Context.Set<T>()
+            var entity = Context.Set<T>().AsNoTracking().Skip(pagenumber*pagesize-pagesize).Take(pagesize)
+                .ToList();
+
+            return entity;
+        }
+
+
+
+        public virtual IEnumerable<T> List(Expression<Func<T, bool>> predicate)
+        {
+            var entity =  Context.Set<T>()
                 .Where(predicate)
-                .ToListAsync();
+                .ToList();
             return entity;
         }
 
-        public virtual async Task<int> Count()
+        public virtual int Count()
         {
-            var count = await Context.Set<T>().CountAsync();
+            var count =  Context.Set<T>().Count();
             return count;
         }
 
-        public virtual async Task<int> Count(Expression<Func<T, bool>> predicate)
+        public virtual int Count(Expression<Func<T, bool>> predicate)
         {
-            var count = await Context.Set<T>().CountAsync(predicate);
+            var count = Context.Set<T>().Count(predicate);
             return count;
         }
 
-        public async Task<bool> Any(Expression<Func<T, bool>> predicate)
+        public  bool Any(Expression<Func<T, bool>> predicate)
         {
-            return await Context.Set<T>().AnyAsync(predicate);
+            return Context.Set<T>().Any(predicate);
         }
 
         
