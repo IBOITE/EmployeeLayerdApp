@@ -1,6 +1,9 @@
-﻿using Employee.Data;
+﻿using cloudscribe.Pagination.Models;
+using Employee.Application;
+using Employee.Data;
 using Employee.Repositroy.Models;
 using Employee.Repositroy.Repositories;
+using EmployeeLayerdApp.MVC.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,17 +14,25 @@ namespace EmployeeLayerdApp.MVC.Controllers
     public class EmployeesController : Controller
     {
 
-        private readonly IBaseRepository<Employe> _employeeRepository;
+        private readonly IService _service;
         private readonly ApplicationDbContext _applicationDbContext;
-        public EmployeesController(IBaseRepository<Employe> employeeRepository, ApplicationDbContext applicationDbContext)
+        public EmployeesController(IService service, ApplicationDbContext applicationDbContext)
         {
-            _employeeRepository = employeeRepository;
+            _service = service;
             _applicationDbContext = applicationDbContext;
         }
         // GET: EmployeesController
-        public ActionResult Index()
+        public ActionResult Index(int pagenumber = 1, int pagesize = 3)
         {
-            return View(_employeeRepository.List());
+            var employees = _service.GetAllEmployees(pagenumber, pagesize);
+            var result = new PagedResult<Employe>()
+            {
+                Data = employees.ToList(),
+                PageNumber = pagenumber,
+                PageSize = pagesize,
+                TotalItems = _service.CountEmployees()
+            };
+            return View(result);
         }
 
         // GET: EmployeesController/Details/5
@@ -32,7 +43,7 @@ namespace EmployeeLayerdApp.MVC.Controllers
                 return NotFound();
             }
 
-            var employee = _employeeRepository.Get(id);
+            var employee = _service.GetEmployee(id);
             if (employee == null)
             {
                 return NotFound();
@@ -44,21 +55,22 @@ namespace EmployeeLayerdApp.MVC.Controllers
         // GET: EmployeesController/Create
         public ActionResult Create()
         {
-            ViewData["DepartmentId"] = new SelectList(_applicationDbContext.Departments, "Id", "Id");
+            ViewData["DepartmentId"] = new SelectList(_applicationDbContext.Departments, "Id", "DepartmentName");
             return View();
         }
 
         // POST: EmployeesController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Employe employee)
+        public ActionResult Create( Employe employee)
         {
+
             if (ModelState.IsValid)
             {
-                _employeeRepository.Insert(employee);
+                _service.PostEmployee(employee);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DepartmentId"] = new SelectList(_applicationDbContext.Departments, "Id", "Id",employee.DepartmentId);
+            ViewData["DepartmentId"] = new SelectList(_applicationDbContext.Departments, "Id", "Id", employee.DepartmentId);
 
             return View(employee);
         }
@@ -71,11 +83,12 @@ namespace EmployeeLayerdApp.MVC.Controllers
                 return NotFound();
             }
 
-            var employee = _employeeRepository.Get(id);
+            var employee = _service.GetEmployee(id);
             if (employee == null)
             {
                 return NotFound();
             }
+            ViewData["DepartmentId"] = new SelectList(_applicationDbContext.Departments, "Id", "DepartmentName", employee.DepartmentId);
             return View(employee);
         }
 
@@ -93,7 +106,7 @@ namespace EmployeeLayerdApp.MVC.Controllers
             {
                 try
                 {
-                    _employeeRepository.Update(employee);
+                    _service.PutEmployee(employee);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -108,6 +121,7 @@ namespace EmployeeLayerdApp.MVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["DepartmentId"] = new SelectList(_applicationDbContext.Departments, "Id", "Id", employee.DepartmentId);
             return View(employee);
         }
 
@@ -119,7 +133,7 @@ namespace EmployeeLayerdApp.MVC.Controllers
                 return NotFound();
             }
 
-            var employee = _employeeRepository.Get(id);
+            var employee = _service.GetEmployee(id);
             if (employee == null)
             {
                 return NotFound();
@@ -133,17 +147,17 @@ namespace EmployeeLayerdApp.MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            var employee = _employeeRepository.Get(id);
+            var employee = _service.GetEmployee(id);
             if (employee != null)
             {
-                _employeeRepository.Delete(id);
+                _service.DeleteEmployee(id);
             }
             return RedirectToAction(nameof(Index));
         }
 
         private bool EmployeeExists(int id)
         {
-            return _employeeRepository.Any(d => d.Id == id);
+            return _service.AnyEmployee(d => d.Id == id);
         }
     }
 }

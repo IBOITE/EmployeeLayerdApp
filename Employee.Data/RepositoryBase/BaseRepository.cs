@@ -131,7 +131,6 @@ namespace Employee.Data.RepositoryBase
         }
 
 
-
         public virtual IEnumerable<T> List(Expression<Func<T, bool>> predicate)
         {
             var entity =  Context.Set<T>()

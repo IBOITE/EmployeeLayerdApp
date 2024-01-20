@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Employee.Repositroy.Models;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Employee.Repositroy.Models
+namespace EmployeeLayerdApp.MVC.Models
 {
-    public class Employe
+    public class EmployeeModelM
     {
         public int Id { get; set; }
 
@@ -16,7 +12,6 @@ namespace Employee.Repositroy.Models
         public string? EmployeeSurName { get; set; }
 
         public int? EmployeeSalary { get; set; }
-
         public int DepartmentId { get; set; }
         [ForeignKey("DepartmentId")]
         public virtual Department? Department { get; set; }

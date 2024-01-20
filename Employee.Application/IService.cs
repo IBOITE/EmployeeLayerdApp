@@ -26,5 +26,6 @@ namespace Employee.Application
         int CountEmployees();
         bool AnyDepartment(Expression<Func<Department, bool>> predicate);
         bool AnyEmployee(Expression<Func<Employe, bool>> predicate);
+
     }
 }

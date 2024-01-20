@@ -11,11 +11,9 @@ namespace EmployeeLayerdApp.MVC.Controllers
     public class DepartmentsController : Controller
     {
         private readonly IService _service;
-        private readonly IBaseRepository<Department> _baseRepository;
-        public DepartmentsController(IService service, IBaseRepository<Department> baseRepository)
+        public DepartmentsController(IService service)
         {
             _service = service;
-            _baseRepository = baseRepository;
         }
         // GET: DepartmentsController
         public ActionResult Index(int pagenumber=1, int pagesize=3)

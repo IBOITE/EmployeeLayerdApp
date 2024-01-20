@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Employee.Repositroy.Models.Employe>
+﻿@model PagedResult<Employee.Repositroy.Models.Employe>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,22 +13,19 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.EmployeeName)
+                @Html.DisplayName("EmployeeName")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EmployeeSurName)
+                @Html.DisplayName("EmployeeSurName")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EmployeeSalary)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Department)
+                @Html.DisplayName("EmployeeSalary")
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Data)
         {
             <tr>
                 <td>
@@ -41,9 +38,6 @@
                     @Html.DisplayFor(modelItem => item.EmployeeSalary)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Department.DepartmentName)
-                </td>
-                <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
@@ -52,3 +46,15 @@
         }
     </tbody>
 </table>
+
+<cs-pager cs-paging-pagesize="@Model.PageSize"
+          cs-paging-pagenumber="@Model.PageNumber"
+          cs-paging-totalitems="@Model.TotalItems"
+          asp-controller="Employees"
+          asp-action="Index"
+          cs-pager-li-current-class="page-item active"
+          cs-pager-li-other-class="page-item"
+          cs-pager-li-non-active-class="page-item disabled"
+          cs-pager-link-current-class="page-link"
+          cs-pager-link-other-class="page-link">
+</cs-pager>

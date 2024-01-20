@@ -33,6 +33,8 @@ namespace Employee.Repositroy.Repositories
         int Count(Expression<Func<T, bool>> predicate);
         bool Any(Expression<Func<T, bool>> predicate);
 
-        
+
+
+
     }
 }
