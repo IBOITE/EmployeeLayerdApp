@@ -9,67 +9,95 @@ using System.Threading.Tasks;
 
 namespace Employee.Application
 {
-    internal class Service : IService
+    public class Service : IService
     {
-        //private readonly IBaseRepository<Department> _departmentRepository;
-        //private readonly IBaseRepository<Employe> _employeeRepository;
+        private readonly IBaseRepository<Department> _departmentRepository;
+        private readonly IBaseRepository<Employe> _employeeRepository;
 
-        //public Service(IBaseRepository<Department> departmentRepository, IBaseRepository<Employe> employeeRepository)
-        //{
-        //    _employeeRepository = employeeRepository;
-        //    _departmentRepository = departmentRepository;
-        //}
+        public Service(IBaseRepository<Department> departmentRepository, IBaseRepository<Employe> employeeRepository)
+        {
+            _employeeRepository = employeeRepository;
+            _departmentRepository = departmentRepository;
+        }
 
-        //public Task<IEnumerable<Department>> GetAllDepartments()
-        //{
-        //    return _departmentRepository.List();
-        //}
+        public IEnumerable<Department> GetAllDepartments()
+        {
+            return _departmentRepository.List();
+        }
+        public IEnumerable<Department> GetAllDepartments(int pagenumber, int pagesize)
+        {
+            return _departmentRepository.List(pagenumber,pagesize);
+        }
 
-        //public Task<IEnumerable<Employe>> GetAllEmployees()
-        //{
-        //    return _employeeRepository.List();
-        //}
+        public IEnumerable<Employe> GetAllEmployees()
+        {
+            return _employeeRepository.List();
+        }
+        public IEnumerable<Employe> GetAllEmployees(int pagenumber, int pagesize)
+        {
+            return _employeeRepository.List(pagenumber, pagesize);
+        }
 
-        //public async Task<Department> GetDepartment(int id)
-        //{
-        //    return await _departmentRepository.Get(id);
-        //}
+        public Department GetDepartment(int id)
+        {
+            return  _departmentRepository.Get(id);
+        }
 
-        //public async Task<Employe> GetEmployee(int id)
-        //{
-        //    return await _employeeRepository.Get(id);
-        //}
+        public  Employe GetEmployee(int id)
+        {
+            return  _employeeRepository.Get(id);
+        }
 
-        //public void PostDepartment(Department department)
-        //{
-        //    _departmentRepository.Insert(department);
-        //}
+        public void PostDepartment(Department department)
+        {
+            _departmentRepository.Insert(department);
+        }
 
-        //public void PostEmployee(Employe employe)
-        //{
-        //    _employeeRepository.Insert(employe);
-        //}
+        public void PostEmployee(Employe employe)
+        {
+            _employeeRepository.Insert(employe);
+        }
 
-        //public async Task<Department> PutDepartment(Department department)
-        //{
-        //    _departmentRepository.Update(department);
-        //    return department;
-        //}
+        public  Department PutDepartment(Department department)
+        {
+            _departmentRepository.Update(department);
+            return department;
+        }
 
-        //public async Task<Employe> PutEmployee(Employe employe)
-        //{
-        //    _employeeRepository.Update(employe);
-        //    return employe;
-        //}
+        public Employe PutEmployee(Employe employe)
+        {
+            _employeeRepository.Update(employe);
+            return employe;
+        }
 
-        //public async Task DeleteDepartment(int id)
-        //{
-        //    await _departmentRepository.Delete(id);
-        //}
+        public void DeleteDepartment(int id)
+        {
+            _departmentRepository.Delete(id);
+        }
 
-        //public async Task DeleteEmployee(int id)
-        //{
-        //    await _employeeRepository.Delete(id);
-        //}
+        public void DeleteEmployee(int id)
+        {
+             _employeeRepository.Delete(id);
+        }
+        public int CountDepartements()
+        {
+            return _departmentRepository.Count();
+        }
+        public int CountEmployees()
+        {
+            return _employeeRepository.Count();
+        }
+        public bool AnyDepartment(Expression<Func<Department, bool>> predicate)
+        {
+            return _departmentRepository.Any(predicate);
+        }
+        public bool AnyEmployee(Expression<Func<Employe, bool>> predicate)
+        {
+            return _employeeRepository.Any(predicate);
+        }
+
+        
+
+        
     }
 }

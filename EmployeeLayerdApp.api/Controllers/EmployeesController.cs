@@ -1,4 +1,5 @@
-﻿using Employee.Repositroy.Models;
+﻿using Employee.Application;
+using Employee.Repositroy.Models;
 using Employee.Repositroy.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,30 +11,30 @@ namespace EmployeeLayerdApp.api.Controllers
     [ApiController]
     public class EmployeesController : ControllerBase
     {
-        private readonly IBaseRepository<Employe> _employeeRepository;
-        public EmployeesController(IBaseRepository<Employe> employeeRepository)
+        private readonly IService _service;
+        public EmployeesController(IService service)
         {
-            _employeeRepository = employeeRepository;
+            _service = service;
         }
         // GET: api/<EmployeesController>
         [HttpGet("GetAll")]
         public IEnumerable<Employe>  GetAll()
         {
-            return _employeeRepository.List();
+            return _service.GetAllEmployees();
         }
 
         // GET api/<EmployeesController>/5
         [HttpGet("{id}")]
         public  Employe Get(int id)
         {
-            return  _employeeRepository.Get(id);
+            return _service.GetEmployee(id);
         }
 
         // POST api/<EmployeesController>
         [HttpPost]
         public void Post([FromBody] Employe employe)
         {
-            _employeeRepository.Insert(employe);
+            _service.PostEmployee(employe);
         }
 
         // PUT api/<EmployeesController>/5
@@ -44,14 +45,15 @@ namespace EmployeeLayerdApp.api.Controllers
             {
                 return BadRequest();
             }
-            return (IActionResult) _employeeRepository.Update(employe);
+            _service.PutEmployee(employe);
+            return Ok(); 
         }
 
         // DELETE api/<EmployeesController>/5
         [HttpDelete("{id}")]
         public  void Delete(int id)
         {
-             _employeeRepository.Delete(id);
+            _service.DeleteEmployee(id);
         }
     }
 }

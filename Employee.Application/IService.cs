@@ -2,22 +2,29 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Employee.Application
 {
-    internal interface IService
+    public interface IService
     {
-        //Task<IEnumerable<Department>> GetAllDepartments();
-        //Task<IEnumerable<Employe>> GetAllEmployees();
-        //Task<Department> GetDepartment(int id);
-        //Task<Employe> GetEmployee(int id);
-        //void PostDepartment(Department department);
-        //void PostEmployee(Employe employe);
-        //Task<Department> PutDepartment(Department department);
-        //Task<Employe> PutEmployee(Employe employe);
-        //Task DeleteDepartment(int id);
-        //Task DeleteEmployee(int id);
+        IEnumerable<Department> GetAllDepartments();
+        IEnumerable<Department> GetAllDepartments(int pagenumber,int pagesize);
+        IEnumerable<Employe> GetAllEmployees();
+        IEnumerable<Employe> GetAllEmployees(int pagenumber, int pagesize);
+        Department GetDepartment(int id);
+        Employe GetEmployee(int id);
+        void PostDepartment(Department department);
+        void PostEmployee(Employe employe);
+        Department PutDepartment(Department department);
+        Employe PutEmployee(Employe employe);
+        void DeleteDepartment(int id);
+        void DeleteEmployee(int id);
+        int CountDepartements();
+        int CountEmployees();
+        bool AnyDepartment(Expression<Func<Department, bool>> predicate);
+        bool AnyEmployee(Expression<Func<Employe, bool>> predicate);
     }
 }

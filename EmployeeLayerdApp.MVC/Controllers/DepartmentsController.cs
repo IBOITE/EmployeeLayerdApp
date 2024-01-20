@@ -1,4 +1,5 @@
 ﻿using cloudscribe.Pagination.Models;
+using Employee.Application;
 using Employee.Repositroy.Models;
 using Employee.Repositroy.Repositories;
 using Microsoft.AspNetCore.Http;
@@ -9,22 +10,23 @@ namespace EmployeeLayerdApp.MVC.Controllers
 {
     public class DepartmentsController : Controller
     {
-
-        private readonly IBaseRepository<Department> _departmentRepository;
-        public DepartmentsController(IBaseRepository<Department> departmentRepository)
+        private readonly IService _service;
+        private readonly IBaseRepository<Department> _baseRepository;
+        public DepartmentsController(IService service, IBaseRepository<Department> baseRepository)
         {
-            _departmentRepository = departmentRepository;
+            _service = service;
+            _baseRepository = baseRepository;
         }
         // GET: DepartmentsController
         public ActionResult Index(int pagenumber=1, int pagesize=3)
         {
-            var departments = _departmentRepository.List(pagenumber, pagesize);
+            var departments = _service.GetAllDepartments(pagenumber, pagesize);
             var result = new PagedResult<Department>()
             {
                 Data = departments.ToList(),
                 PageNumber = pagenumber,
                 PageSize = pagesize,
-                TotalItems = _departmentRepository.Count()
+                TotalItems = _service.CountDepartements()
             };
             return View(result);
         }
@@ -37,7 +39,7 @@ namespace EmployeeLayerdApp.MVC.Controllers
                 return NotFound();
             }
 
-            var departmant = _departmentRepository.Get(id);
+            var departmant = _service.GetDepartment(id);
             if (departmant == null)
             {
                 return NotFound();
@@ -61,7 +63,7 @@ namespace EmployeeLayerdApp.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                _departmentRepository.Insert(departmant);
+                _service.PostDepartment(departmant);
                 return RedirectToAction(nameof(Index));
             }
             return View(departmant);
@@ -75,7 +77,7 @@ namespace EmployeeLayerdApp.MVC.Controllers
                 return NotFound();
             }
 
-            var departmant = _departmentRepository.Get(id);
+            var departmant = _service.GetDepartment(id);
             if (departmant == null)
             {
                 return NotFound();
@@ -99,7 +101,7 @@ namespace EmployeeLayerdApp.MVC.Controllers
             {
                 try
                 {
-                    _departmentRepository.Update(departmant);
+                    _service.PutDepartment(departmant);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -125,7 +127,7 @@ namespace EmployeeLayerdApp.MVC.Controllers
                 return NotFound();
             }
 
-            var departmant = _departmentRepository.Get(id);
+            var departmant = _service.GetDepartment(id);
             if (departmant == null)
             {
                 return NotFound();
@@ -139,17 +141,17 @@ namespace EmployeeLayerdApp.MVC.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            var departmant = _departmentRepository.Get(id);
+            var departmant = _service.GetDepartment(id);
             if (departmant != null)
             {
-                _departmentRepository.Delete(id);
+                _service.DeleteDepartment(id);
             }
             return RedirectToAction(nameof(Index));
         }
 
         private bool DepatmanExists(int id)
         {
-            return _departmentRepository.Any(d => d.Id == id);
+            return _service.AnyDepartment(d => d.Id == id);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Employee.Repositroy.Models;
+﻿using Employee.Application;
+using Employee.Repositroy.Models;
 using Employee.Repositroy.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,10 +10,10 @@ namespace EmployeeLayerdApp.api.Controllers
     [ApiController]
     public class DepartmentsController : ControllerBase
     {
-        private readonly IBaseRepository<Department> _departmentRepository;
-        public DepartmentsController(IBaseRepository<Department> departmentRepository)
+        private readonly IService _service;
+        public DepartmentsController( IService service)
         {
-            _departmentRepository = departmentRepository;
+            _service = service;
         }
         /*
         [HttpGet("getbyid")]
@@ -38,23 +39,23 @@ namespace EmployeeLayerdApp.api.Controllers
         */
 
         [HttpGet("GetAll")]
-        public IEnumerable<Department> GetAll()
+        public IEnumerable<Department> Departments()
         {
-            return _departmentRepository.List();
+            return _service.GetAllDepartments();
         }
-
+   
         // GET api/<EmployeesController>/5
         [HttpGet("{id}")]
         public  Department Get(int id)
         {
-            return  _departmentRepository.Get(id);
+            return  _service.GetDepartment(id);
         }
 
         // POST api/<EmployeesController>
         [HttpPost]
         public void Post([FromBody] Department department)
         {
-            _departmentRepository.Insert(department);
+            _service.PostDepartment(department);
         }
 
         // PUT api/<EmployeesController>/5
@@ -65,7 +66,7 @@ namespace EmployeeLayerdApp.api.Controllers
             {
                 return BadRequest();
             }
-             _departmentRepository.Update(department);
+             _service.PutDepartment(department);
             return Ok();   
         }
 
@@ -74,7 +75,7 @@ namespace EmployeeLayerdApp.api.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-             _departmentRepository.Delete(id);
+             _service.DeleteDepartment(id);
         }
     }
 }
