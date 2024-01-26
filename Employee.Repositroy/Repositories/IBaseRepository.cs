@@ -32,7 +32,8 @@ namespace Employee.Repositroy.Repositories
         int Count();
         int Count(Expression<Func<T, bool>> predicate);
         bool Any(Expression<Func<T, bool>> predicate);
-
+        //here
+        IQueryable<T> GetAll();
 
 
 

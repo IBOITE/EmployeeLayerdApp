@@ -1,4 +1,6 @@
-﻿using Employee.Repositroy.Models;
+﻿using Employee.Application.Pagination;
+using Employee.Repositroy.Models;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +28,9 @@ namespace Employee.Application
         int CountEmployees();
         bool AnyDepartment(Expression<Func<Department, bool>> predicate);
         bool AnyEmployee(Expression<Func<Employe, bool>> predicate);
+
+        
+        Task<PagedList<Employe>>GetAllEmployeesPa(PagingParameters pagingParameters);
 
     }
 }

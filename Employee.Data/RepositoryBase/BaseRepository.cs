@@ -156,6 +156,11 @@ namespace Employee.Data.RepositoryBase
             return Context.Set<T>().Any(predicate);
         }
 
-        
+        //here
+        public IQueryable<T> GetAll()
+        {
+            var entity=Context.Set<T>().AsNoTracking();
+            return entity;
+        }
     }
 }

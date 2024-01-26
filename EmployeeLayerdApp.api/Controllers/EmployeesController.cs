@@ -1,4 +1,5 @@
 ﻿using Employee.Application;
+using Employee.Application.Pagination;
 using Employee.Repositroy.Models;
 using Employee.Repositroy.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +24,12 @@ namespace EmployeeLayerdApp.api.Controllers
             return _service.GetAllEmployees();
         }
 
+        // using paging
+        [HttpGet("GetAllAsPagination")]
+        public async Task<ActionResult<IEnumerable<Employe>>> GetAll([FromQuery]PagingParameters pagingParameters)
+        {
+            return await _service.GetAllEmployeesPa(pagingParameters);
+        }
         // GET api/<EmployeesController>/5
         [HttpGet("{id}")]
         public  Employe Get(int id)

@@ -1,4 +1,5 @@
-﻿using Employee.Repositroy.Models;
+﻿using Employee.Application.Pagination;
+using Employee.Repositroy.Models;
 using Employee.Repositroy.Repositories;
 using System;
 using System.Collections.Generic;
@@ -96,7 +97,14 @@ namespace Employee.Application
             return _employeeRepository.Any(predicate);
         }
 
+
         
+        public Task<PagedList<Employe>> GetAllEmployeesPa(PagingParameters pagingParameters)
+        {
+            return Task.FromResult(PagedList<Employe>.
+                GetPagedList(_employeeRepository.GetAll().OrderBy(s => s.Id),
+                pagingParameters.PageNum, pagingParameters.PageSize));
+        }
 
         
     }
