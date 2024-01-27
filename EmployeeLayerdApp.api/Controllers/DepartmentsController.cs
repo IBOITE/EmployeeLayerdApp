@@ -11,9 +11,13 @@ namespace EmployeeLayerdApp.api.Controllers
     public class DepartmentsController : ControllerBase
     {
         private readonly IService _service;
-        public DepartmentsController( IService service)
+        private readonly ILogger<DepartmentsController> _logger;
+
+        public DepartmentsController( IService service,ILogger<DepartmentsController>logger)
         {
             _service = service;
+            _logger = logger;
+            //_logger.LogDebug("Nlog is integrated to Departments Controller");
         }
         /*
         [HttpGet("getbyid")]
@@ -41,7 +45,17 @@ namespace EmployeeLayerdApp.api.Controllers
         [HttpGet("GetAll")]
         public IEnumerable<Department> Departments()
         {
-            return _service.GetAllDepartments();
+            try
+            {
+                _logger.LogInformation("Get Departmets requested.");
+                return _service.GetAllDepartments();
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return (IEnumerable<Department>)StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            
         }
    
         // GET api/<EmployeesController>/5

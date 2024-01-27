@@ -1,12 +1,24 @@
+using NLog;
+using NLog.Web;
 using Employee.Application;
 using Employee.Data;
 using Employee.Data.RepositoryBase;
 using Employee.Repositroy.Repositories;
 using Microsoft.EntityFrameworkCore;
 
+var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+//logger.Debug("init main");
+
+try
+{
+
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+// NLog: Setup NLog for Dependency injection
+builder.Logging.ClearProviders();
+builder.Host.UseNLog();
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -36,3 +48,12 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+}
+catch(Exception ex)
+{
+    logger.Error(ex);
+}
+finally
+{
+    LogManager.Shutdown();
+}
