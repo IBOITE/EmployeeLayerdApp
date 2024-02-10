@@ -5,6 +5,8 @@ using Employee.Data;
 using Employee.Data.RepositoryBase;
 using Employee.Repositroy.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication;
+using EmployeeLayerdApp.api.Authenticaton;
 
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 //logger.Debug("init main");
@@ -30,6 +32,7 @@ builder.Services.AddTransient<IService, Service>();
 builder.Services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddAuthentication().AddScheme<AuthenticationSchemeOptions, BasicAuthenticaionHandler>("Basic", null);
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();

@@ -1,11 +1,13 @@
 ﻿using Employee.Application;
 using Employee.Repositroy.Models;
 using Employee.Repositroy.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeLayerdApp.api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class DepartmentsController : ControllerBase
